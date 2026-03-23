@@ -12,7 +12,7 @@ int main() {
     int option_count, factor_count;
 
     printf("\n=====================================\n");
-    printf("     LIFE DECISION SIMULATOR\n");
+    printf("     SMART DECISION ENGINE \n");
     printf("=====================================\n\n");
 
     // Input number of options
