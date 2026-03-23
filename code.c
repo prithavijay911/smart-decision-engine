@@ -1,7 +1,4 @@
 #include <stdio.h>
-#include <string.h>
-#include "decision_engine.h"
-#include "utils.h"
 
 #define MAX_OPTIONS 10
 #define MAX_FACTORS 10
@@ -19,7 +16,8 @@ int main() {
     printf("=====================================\n\n");
 
     // Input number of options
-    option_count = get_count("Enter number of options: ");
+    printf("Enter number of options: ");
+    scanf("%d", &option_count);
 
     if (option_count < 2 || option_count > MAX_OPTIONS) {
         printf("Invalid number of options.\n");
@@ -27,10 +25,15 @@ int main() {
     }
 
     // Input options
-    get_strings("Enter options:", options, option_count);
+    printf("\nEnter options:\n");
+    for (int i = 0; i < option_count; i++) {
+        printf("Option %d: ", i + 1);
+        scanf("%s", options[i]);
+    }
 
     // Input number of factors
-    factor_count = get_count("\nEnter number of factors: ");
+    printf("\nEnter number of factors: ");
+    scanf("%d", &factor_count);
 
     if (factor_count < 1 || factor_count > MAX_FACTORS) {
         printf("Invalid number of factors.\n");
@@ -38,12 +41,17 @@ int main() {
     }
 
     // Input factors
-    get_strings("Enter factors:", factors, factor_count);
+    printf("\nEnter factors:\n");
+    for (int i = 0; i < factor_count; i++) {
+        printf("Factor %d: ", i + 1);
+        scanf("%s", factors[i]);
+    }
 
     // Input weights
     printf("\nAssign weights (0–10):\n");
     for (int i = 0; i < factor_count; i++) {
-        weights[i] = get_float(factors[i]);
+        printf("Weight for %s: ", factors[i]);
+        scanf("%f", &weights[i]);
     }
 
     // Calculate scores
@@ -52,16 +60,31 @@ int main() {
         scores[i] = 0;
 
         for (int j = 0; j < factor_count; j++) {
-            float score = get_float(factors[j]);
+            float score;
+            printf("Score for %s: ", factors[j]);
+            scanf("%f", &score);
+
             scores[i] += score * weights[j];
         }
     }
 
     // Find best option
-    int best_index = find_best_option(scores, option_count);
+    int best_index = 0;
+    for (int i = 1; i < option_count; i++) {
+        if (scores[i] > scores[best_index]) {
+            best_index = i;
+        }
+    }
 
-    // Print results
-    print_results(options, scores, option_count, best_index);
+    // Output results
+    printf("\n=========== RESULTS ===========\n");
+    for (int i = 0; i < option_count; i++) {
+        printf("%s : %.2f\n", options[i], scores[i]);
+    }
+
+    printf("\nRecommended Decision: %s\n", options[best_index]);
+    printf("================================\n");
 
     return 0;
+}
 }
